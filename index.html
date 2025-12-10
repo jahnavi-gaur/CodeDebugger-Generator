@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AI Code Generator — UI (HTML + CSS)</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <h1>AI Code Studio</h1>
+        <p class="muted">Generate · Run · Debug</p>
+      </div>
+
+      <div class="controls-inline" aria-hidden="true">
+        <label class="visually-hidden" for="lang">Language</label>
+        <!-- <select id="lang" name="lang" class="select">
+          <option>JavaScript</option>
+          <option>HTML/CSS</option>
+          <option>Python</option>
+          <option>Java</option>
+        </select> -->
+
+        <button class="btn btn-ghost" id="shareBtn" type="button" aria-label="Share (placeholder)">
+          Share
+        </button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <!-- Left column: prompts & actions -->
+      <section class="panel panel-left" aria-labelledby="promptLabel">
+        <div class="panel-head">
+          <h2 id="promptLabel">Prompt</h2>
+          <p class="muted">Describe the code you want the model to generate.</p>
+        </div>
+
+        <textarea id="prompt" class="input prompt"
+          placeholder="e.g. Build a responsive navbar with logo and a dropdown menu..." rows="8"
+          aria-label="Describe the code you want"></textarea>
+
+        <div class="actions">
+          <button class="btn btn-primary" id="generateBtn" data-action="generate">Generate</button>
+          <button class="btn" id="explainBtn" data-action="explain">Explain</button>
+          <button class="btn btn-outline" id="examplesBtn" data-action="examples">Examples</button>
+          <div id="examplesList"></div>
+        </div>
+        <hr />
+
+        <div class="panel-foot">
+          <h3>Tips</h3>
+          <ul class="tips">
+            <li>Be explicit about inputs/output and required libraries.</li>
+            <li>Request the language and any constraints (no external libs, ES6 only, etc.).</li>
+            <li>Use the Debug action after running to get fixes and suggestions.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Right column: editor & output -->
+      <section class="panel panel-right" aria-labelledby="codeLabel">
+        <div class="panel-head">
+          <h2 id="codeLabel">Editor</h2>
+          <!-- <div class="editor-controls">
+            <span class="muted small">Language:</span>
+            <span id="langLabel" class="pill">JavaScript</span>
+          </div> -->
+        </div>
+
+        <div class="editor-frame" role="region" aria-label="Code editor">
+          <!-- code textarea (hook JS here later) -->
+          <textarea id="codeOutput" class="input code" spellcheck="false" aria-label="Generated code"
+            placeholder="Generate code will apper here.">
+          </textarea>
+        </div>
+
+        <div class="row">
+          <button class="btn btn-success" id="runBtn" data-action="run">Run</button>
+          <button class="btn btn-warning" id="debugBtn" data-action="debug">Debug</button>
+          <button class="btn" id="downloadBtn" data-action="download">Download</button>
+          <button class="btn btn-ghost" id="clearBtn" data-action="clear">Clear</button>
+        </div>
+
+        <h3 class="output-title">Output / Console</h3>
+        <pre id="result" class="output"
+          aria-live="polite">No output yet. Run your code to see console output and errors here.</pre>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <small class="muted">UI only — add JavaScript to wire API calls, sandbox execution, and debugging logic.</small>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+
+</html>
