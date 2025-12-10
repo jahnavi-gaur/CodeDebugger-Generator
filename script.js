@@ -1,6 +1,4 @@
 const promptBox = document.getElementById('prompt')
-// const langSelect = document.getElementById('lang')
-// const langLabel = document.getElementById('langLabel')
 
 const generateBtn = document.getElementById('generateBtn')
 const explainBtn = document.getElementById('explainBtn')
@@ -16,14 +14,6 @@ const shareBtn = document.getElementById('shareBtn')
 
 const result = document.getElementById('result');
 
-// const languageModes = {
-//     html: "htmlmixed",
-//     css: "css",
-//     javascript: "javascript",
-//     python: "python",
-//     java: "java"
-// };
-
 generateBtn.addEventListener('click', generateCode);
 explainBtn.addEventListener('click', explainCode);
 examplesBtn.addEventListener('click',examplesCode);
@@ -32,7 +22,6 @@ debugBtn.addEventListener('click',debugCode);
 downloadBtn.addEventListener('click',downloadCode);
 clearBtn.addEventListener('click',clearCode);
 shareBtn.addEventListener('click',shareCode);
-// langSelect.addEventListener('change',langChange);
 
 
 async function generateCode(event) {
@@ -57,9 +46,9 @@ async function explainCode(event) {
         alert("Please enter code first to explain!");
         return;
     }
-    const originalPromptBoxValue = promptBox.value;
+    const originalCodeValue = codeOutput.value;
     promptBox.value = "Generating Explanation..."
-    const response = await callLLM('explain', originalPromptBoxValue);
+    const response = await callLLM('explain', originalCodeValue);
     promptBox.value = response
 }
 
@@ -170,14 +159,6 @@ async function shareCode(event){
         alert("Failed to copy link: " + err.message);
     }
 }
-
-// function langChange(event){
-//     const selectedLang = langSelect.value;
-//     langLabel.innerText = selectedLang;
-//     codeOutput.setOption("mode", languageModes[selectedLang]);
-// }
-
-
 
 
 async function callLLM(promptType, prompt) {
