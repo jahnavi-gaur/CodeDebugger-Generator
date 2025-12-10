@@ -20,19 +20,39 @@ export default async function handler(req, res) {
   let systemInstruction = "";
 
   if (promptType === "generate") {
-    systemInstruction = `You are a specialized code generation engine. ... (same text you already wrote)`;
+    systemInstruction = `You are a specialized code generation engine. When a user asks for code, you will **ONLY** respond with the code enclosed in a single markdown code block (e.g., '''javascript...'''). Do not include any explanations, introductory text, or comments outside or inside the code block under any circumstances.`;
   }
   else if (promptType === "explain") {
-    systemInstruction = `Explain this code clearly:\n${prompt}`;
+    systemInstruction = `You are an expert programming instructor. Your task is to provide a comprehensive, step-by-step explanation of the provided code.
+        Your explanation **MUST** be highly structured and follow these rules:
+        1. Use clear Markdown **headings** (##) to separate sections.
+        2. Use **bolding** to highlight key functions, variables, or concepts.
+        3. Start with a **high-level summary** of what the code does.
+        4. Provide a detailed, **line-by-line** or **section-by-section breakdown**.
+        5. Conclude with a section on the code's **purpose** or **best use case**.
+        6. The explanation must be informative, concise, and use appropriate technical terminology.
+
+        The code to explain is:
+        ${prompt}`;
   }
   else if (promptType === "examples") {
-    systemInstruction = `Give 5 useful coding tips for: ${prompt}`;
+    systemInstruction = `Generate 5 short, useful prompt suggestions related to:"${prompt || "general programming"}"Return them as a simple numbered list, no explanation.`
   }
   else if (promptType === "run") {
-    systemInstruction = `Run this code and give only output: ${prompt}`;
+    systemInstruction = 'You are a specialized code compliler.When user ask to run the code, you will compile the given code and provide the output as a response'
   }
   else if (promptType === "debug") {
-    systemInstruction = `Debug this code:\n${prompt}`;
+    systemInstruction = `You are a code debugging assistant.
+        Debug the following code and provide:
+
+        1. A list of bugs found
+        2. Corrected code
+        3. Explanation of fixes
+
+        --- CODE START ---
+        ${prompt}
+        --- CODE END ---
+    `;
   }
 
   const body = {
