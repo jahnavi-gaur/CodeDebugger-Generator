@@ -25,10 +25,12 @@ shareBtn.addEventListener('click',shareCode);
 
 
 async function generateCode(event) {
+    generateBtn.disabled = true
     //read user prompt
     const userPrompt = promptBox.value.trim()
-    if (!prompt) {
+    if (!userPrompt) {
         alert('Please enter a prompt first!')
+        generateBtn.disabled = false;
         return
     }
     //show loading text
@@ -36,8 +38,8 @@ async function generateCode(event) {
     //call llm
     const response = await callLLM("generate", userPrompt)
     //enter content to editor
-    codeOutput.style.backgroundColor = 'gray';
     codeOutput.value = response;
+    generateBtn.disabled = false;
 }
 
 async function explainCode(event) {
@@ -112,7 +114,7 @@ function downloadCode(event){
     const code = codeOutput.value
     if(!code.trim()){
         alert('Nothing to Download.')
-        reutrn
+        return
     }
     // Create a Blob (file-like object)
     const blob = new Blob([code], { type: "text/plain" });

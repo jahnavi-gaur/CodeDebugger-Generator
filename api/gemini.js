@@ -12,6 +12,10 @@ export default async function handler(req, res) {
   // 🔐 Secure key from Vercel Environment
   const apiKey = process.env.GEMINI_API_KEY;
 
+  if (!apiKey) {
+    return res.status(500).json({ error: "API key not configured" });
+  }
+
   const url =
     "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" +
     apiKey;
@@ -36,10 +40,13 @@ export default async function handler(req, res) {
         ${prompt}`;
   }
   else if (promptType === "examples") {
-    systemInstruction = `Generate 5 short, useful prompt suggestions related to:"${prompt || "general programming"}"Return them as a simple numbered list, no explanation.`
+    systemInstruction = `
+        Generate 5 short, useful prompt suggestions related to:
+        "${prompt || "general programming"}"
+        Return them as a simple numbered list.`;
   }
   else if (promptType === "run") {
-    systemInstruction = 'You are a specialized code compliler.When user ask to run the code, you will compile the given code and provide the output as a response'
+    systemInstruction = 'You are a specialized code compiler.When user ask to run the code, you will compile the given code and provide the output as a response'
   }
   else if (promptType === "debug") {
     systemInstruction = `You are a code debugging assistant.
@@ -57,8 +64,10 @@ export default async function handler(req, res) {
 
   const body = {
     contents: [
-      { role: "user", parts: [{ text: systemInstruction }] },
-      { role: "user", parts: [{ text: prompt }] }
+      {
+        role: "user",
+        parts: [{ text: `${systemInstruction}\n\n${prompt}` }]
+      }
     ]
   };
 
